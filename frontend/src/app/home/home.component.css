@@ -1,0 +1,12 @@
+.featured {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+@media only screen and (max-width: 720px) {
+    .unregistered-home-container {
+        overflow-x: hidden;
+    }
+}

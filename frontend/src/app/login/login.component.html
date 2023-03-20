@@ -1,0 +1,29 @@
+<article>
+    <h4 style="text-align: center;" *ngIf="!isAdminLogin else adminCaption">Prijavite se na svoj nalog: </h4>
+    <form class="form-container" #loginForm="ngForm" (ngSubmit)="loginForm.form.valid && login()" >
+    <p>
+        <label>Korisničko ime ili e-mail:</label>
+        <input type="text" name="identifier" #idVar="ngModel" [(ngModel)]="identifier" required>
+        <span [hidden]="!(loginForm.submitted && idVar.invalid)">
+            <label style="color: var(--warn);">Korisničko ime ili e-mail su obavezni.</label>
+        </span>
+    </p>
+    <p>
+        <label>Lozinka:</label>
+        <input type="password" name="password" #pasVar="ngModel" [(ngModel)]="password" required>
+        <span [hidden]="!(loginForm.submitted && pasVar.invalid)">
+            <label style="color: var(--warn);">Lozinka je obavezna.</label>
+        </span>
+    </p>
+    <p style="text-align: center;">
+        <button type="submit">Prijavi se</button>
+    </p>
+    <p style="text-align: center;" *ngIf="!isAdminLogin">
+        Ukoliko nemate nalog, <a [routerLink]="['/register']">registrujte se</a>.
+    </p>
+</form>
+</article>
+
+<ng-template #adminCaption>
+    <h4 style="text-align: center;">Prijavite se kao administrator:</h4>
+</ng-template>

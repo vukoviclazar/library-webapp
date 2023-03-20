@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "63023ef248b322d1e659b871"
+  },
+  "firstName": "Admin",
+  "lastName": "Admin",
+  "username": "admin",
+  "password": "admin",
+  "address": "Admin, bb, Admin",
+  "phone": "+1234567890",
+  "email": "admin@biblioteka.com",
+  "avatarImagePath": "avatar_admin.jpg",
+  "role": "admin",
+  "blocked": false,
+  "registeredSuccessfully": true
+}]

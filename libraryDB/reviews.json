@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "632afc1b9601d03b81521417"
+  },
+  "user": {
+    "$oid": "63023ef248b322d1e659b871"
+  },
+  "bookId": {
+    "$oid": "632afa359601d03b81521387"
+  },
+  "comment": "Lorem ipsum dolor sit amet",
+  "dateRated": {
+    "$date": {
+      "$numberLong": "1663761435748"
+    }
+  },
+  "rating": 9,
+  "edited": false,
+  "__v": 0
+}]

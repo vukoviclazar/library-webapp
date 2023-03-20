@@ -1,0 +1,12 @@
+<div class="horizontal-card">
+    <div class="horizontal-card-image">
+        <img src="{{avatarUri}}/{{user.avatarImagePath}}" alt="{{user.username}} avatar" [routerLink]="['/admin/user-profile', user.username ]">
+    </div>
+    <div class="horizontal-card-content">
+        <h4 class="hover-brightness-text" [routerLink]="['/admin/user-profile', user.username ]">{{user.firstName}} {{user.lastName}}</h4>
+        <p>
+            <label>Korisničko ime: <b>{{user.username}}</b></label>
+            <label>E-mail: <b>{{user.email}}</b></label>
+        </p>
+    </div>
+</div>

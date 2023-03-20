@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "63247b4dbf04d6f3ff18aeaf"
+  },
+  "tag": "allowedLoanLength",
+  "data": 14
+},{
+  "_id": {
+    "$oid": "63247c10bf04d6f3ff18aeb0"
+  },
+  "tag": "allGenres",
+  "data": [
+    "example1",
+    "example2",
+    "example3"
+  ],
+  "__v": 43
+}]

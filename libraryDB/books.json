@@ -1,0 +1,44 @@
+[{
+  "_id": {
+    "$oid": "632afa359601d03b81521387"
+  },
+  "title": "Example",
+  "authors": [
+    {
+      "firstName": "Author1First",
+      "lastName": "Author1Last",
+      "_id": {
+        "$oid": "632afa359601d03b81521388"
+      }
+    },
+    {
+      "firstName": "Author2First",
+      "lastName": "Author2Last",
+      "_id": {
+        "$oid": "632afa359601d03b81521389"
+      }
+    }
+  ],
+  "genres": [
+    "example1",
+    "example2",
+    "example3"
+  ],
+  "publisher": "Example publisher",
+  "yearPublished": {
+    "$date": {
+      "$numberLong": "883612800000"
+    }
+  },
+  "language": "example",
+  "timesRated": 0,
+  "averageRating": 0,
+  "timesRead": 0,
+  "copiesAvailable": 6,
+  "successfullyAdded": true,
+  "userWhoRequested": {
+    "$oid": "63023ef248b322d1e659b871"
+  },
+  "waitingUsers": [],
+  "__v": 0
+}]

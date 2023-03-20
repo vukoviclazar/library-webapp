@@ -1,0 +1,34 @@
+<div>
+    <h3 style="text-align: center">Knjige na pozajmici</h3>
+    <section>
+        <div *ngIf="loans != null && loans.length == 0">
+            <h4 style="color: var(--text-light); text-align: center">Trenutno nemate nijednu knjigu na pozajmici</h4>
+        </div>
+        <div *ngIf="loans != null; else loading">
+            <div *ngFor="let loan of loans" class="horizontal-card">
+                <div class="horizontal-card-image">
+                    <img src="{{coversUri}}/{{loan.book.coverImagePath}}" alt="{{loan.book.title}} cover" [routerLink]="['/reader/book-details', loan.book._id ]">
+                </div>
+                <div class="horizontal-card-content">
+                    <h4 class="hover-brightness-text" [routerLink]="['/reader/book-details', loan.book._id ]">{{loan.book.title}}</h4>
+                    <p>
+                        <label>Autori:
+                            <b>{{authorsToString(loan.book)}}</b></label>
+                        <label *ngIf="loan['remainingDays'] < 0" style="color: var(--warn)">Rok za vraćanje je istekao pre <b>{{-loan['remainingDays']}}</b> 
+                            {{(-loan['remainingDays'] % 10 == 1 && -loan['remainingDays'] != 11) ? "dan" : "dana"}}</label>
+                        <label *ngIf="loan['remainingDays'] >= 0">Dana preostalo do vraćanja: <b>{{loan['remainingDays']}}</b></label>
+                    </p>
+                    <p class="buttons">
+                        <button *ngIf="!loan.extended && !user.blocked" (click)="extendDeadline(loan)">Produži rok za vraćanje</button>
+                        &nbsp;
+                        <button (click)="returnBook(loan)">Vrati knjigu</button>
+                    </p>
+               </div>
+            </div>
+        </div>
+    </section>
+    <ng-template #loading>
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+    </ng-template>
+
+</div>

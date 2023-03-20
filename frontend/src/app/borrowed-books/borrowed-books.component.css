@@ -1,0 +1,49 @@
+.horizontal-card {
+    max-height: 16em;
+}
+
+.horizontal-card-image {
+    flex: 30%;
+    height: 16em;
+    width: 16em;
+  }
+
+.horizontal-card-content {
+    display: flex; 
+    flex-flow: column wrap;
+    align-items: flex-start;
+    max-height: 16em;
+}
+
+.horizontal-card-content 
+h4, 
+p {
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.buttons {
+    margin-top: auto;
+    margin-bottom: 0;
+    align-self: flex-end;
+}
+
+@media only screen and (max-width: 720px) {
+    .horizontal-card-image {
+        display: initial;
+        width: 100%;
+        flex: 100%
+    }
+
+    .horizontal-card-image img {
+        border-radius: 5px 0px 5px 0px !important;
+      }
+
+    .horizontal-card {
+        max-height: fit-content
+    }
+
+    .horizontal-card-content {
+        max-height: fit-content
+    }
+}

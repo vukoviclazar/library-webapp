@@ -1,0 +1,38 @@
+<div>
+    <h3 style="text-align: center">Istorija pozajmljivanja</h3>
+    <section>
+        <div *ngIf="loans != null && loans.length == 0">
+            <h4 style="color: var(--text-light); text-align: center">Do sada niste imali pozajmica</h4>
+        </div>
+        <div *ngIf="sortedLoans != null; else loading">
+            <div *ngIf="sortedLoans != null && loans.length != 0">
+            <table #tableSort matSort (matSortChange)="sortData()"
+            matSortActive="dateReturned" matSortDirection="desc">
+                <thead>
+                    <tr>
+                        <th class="header" mat-sort-header="title">Naziv</th>
+                        <th class="header" mat-sort-header="authors">Autori</th>
+                        <th class="header" mat-sort-header="dateBorrowed">Datum zaduživanja</th>
+                        <th class="header" mat-sort-header="dateReturned">Datum vraćanja</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let loan of sortedLoans">
+                        <td>
+                            <a *ngIf="loan.book != null" [routerLink]="['/reader/book-details', loan.book._id]">{{loan.backupTitle}}</a>   
+                            <span *ngIf="loan.book == null">{{loan.backupTitle}}</span>   
+                        </td>
+                        <td>{{authorsToString(loan)}}</td>
+                        <td>{{loan.dateBorrowed.getFullYear()}}-{{loan.dateBorrowed.getMonth()+1}}-{{loan.dateBorrowed.getDate()}}</td>
+                        <td>{{loan.dateReturned.getFullYear()}}-{{loan.dateReturned.getMonth()+1}}-{{loan.dateReturned.getDate()}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </section>
+    <ng-template #loading>
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+    </ng-template>
+
+</div>

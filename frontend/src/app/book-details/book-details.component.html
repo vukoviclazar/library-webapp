@@ -1,0 +1,77 @@
+<div>
+    <article *ngIf="!errorFetchingData && !editBook">
+        <div style="text-align: center" *ngIf="book != null; else loading" class="form-container">
+            <h3 style="text-align: center">{{book.title}}</h3>
+            <p>
+                <img alt="cover of book {{book.title}}" src='{{coverUri}}/{{book.coverImagePath}}'
+                    class="profile-page" />
+            </p>
+            <p>
+                <label>Autori:
+                    <b>{{authorsToString(book)}}</b></label>
+            </p>
+            <p>
+                <label>Žanrovi:
+                    <b>{{genresToString(book)}}</b></label>
+            </p>
+            <p>
+                <label>Izdavač:
+                    <b>{{book.publisher}}</b></label>
+            </p>
+            <p>
+                <label>Godina izdavanja:
+                    <b>{{book.yearPublished.getFullYear()}}</b></label>
+            </p>
+            <p>
+                <label>Jezik:
+                    <b>{{book.language}}</b></label>
+            </p>
+            <p>
+                <label>Primeraka na stanju:
+                    <b>{{book.copiesAvailable}}</b></label>
+            </p>
+            <p>
+                <label>Knjiga je zaduživana 
+                    <b>{{book.timesRead}}</b> {{(book.timesRead % 10 == 1 && book.timesRead != 11) ? "put" : "puta"}}</label>
+            </p>
+            <p>
+                <label>Prosečna ocena:
+                    <b>{{doubleCompare(book.averageRating, 0) != 0 ? book.averageRating : "Nije ocenjena"}}</b></label>
+            </p>
+            <p *ngIf="book.successfullyAdded">
+                <button [disabled]="alreadyLoaned || book.copiesAvailable == 0" (click)="borrowBook(book)">{{alreadyLoaned ? "Već ste zadužili ovu knjigu" : (book.copiesAvailable == 0 ? "Nema primeraka na stanju" : "Zaduži knjigu")}}</button>
+            </p>
+            <p *ngIf="!book.successfullyAdded && (user.role == 'moderator' || user.role == 'admin') && usernameWhoRequested != null && usernameWhoRequested != ''">
+            <label>Korisnik koji je zahtevao knjigu: 
+                <b>{{usernameWhoRequested}}</b></label>
+            </p>
+        </div>
+    </article>
+
+    <app-edit-book *ngIf="!errorFetchingData && book != null && editBook" [currentBook]="book" #editBookComp (bookUpdate)="refreshComponent(book._id)"></app-edit-book>
+            
+    <p style="text-align: center" *ngIf="!errorFetchingData && book != null && user.role == 'moderator' || user.role == 'admin'">
+        <label>
+            <input type="checkbox" [(ngModel)]="editBook">
+            Izmeni podatke o knjizi?
+        </label>
+    </p>
+
+    <div *ngIf="!errorFetchingData && !editBook && book != null">
+        <h4>Recenzije</h4>
+        <div style="text-align: center" *ngIf="reviews != null; else loading" class="form-container">
+            <div *ngIf="canReview && !alreadyReviewed">
+                <app-review-card (bookUpdate)="refreshComponent(book._id)" [bookId]="book._id" [curUser]="user"></app-review-card>
+            </div>
+            <h5 *ngIf="reviews.length == 0" style="text-align: center; color: var(--text-light);">Za ovu knjigu još uvek nema recenzija</h5>
+            <div *ngFor="let review of reviews">
+                <app-review-card (bookUpdate)="refreshComponent(book._id)" [bookId]="book._id" [curUser]="user" [review]="review"></app-review-card>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<ng-template #loading>
+    <mat-progress-bar mode="buffer"></mat-progress-bar>
+</ng-template>

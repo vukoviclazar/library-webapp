@@ -1,0 +1,15 @@
+<div class="card">
+    <div class="card-image">
+        <img [routerLink]="['/reader/book-details', book._id]" src="{{coverUri}}/{{book.coverImagePath}}" alt="{{book.title}} cover">
+    </div>
+    <div class="card-content">
+        <small class="hover-brightness-text" [routerLink]="['/reader/book-details', book._id]"><b>{{book.title}}</b></small>
+        <p>
+            <small>Autori: <b>{{authorsToString(book)}}</b></small>
+            <small>Žanr: <b>{{genresToString(book)}}</b></small>
+            <small>Izdavač: <b>{{book.publisher}}</b></small>
+            <small>Godina izdavanja: <b>{{book.yearPublished.getFullYear()}}</b></small>
+            <small>Jezik: <b>{{book.language}}</b></small>
+        </p>
+    </div>
+</div>

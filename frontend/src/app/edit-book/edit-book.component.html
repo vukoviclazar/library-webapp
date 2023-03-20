@@ -1,0 +1,105 @@
+<div>
+    <article>
+        <h3 style="text-align: center">{{isNew ? "Forma za dodavanje nove knjige" : "Izmenite podatke o knjizi" }}</h3>
+
+        <form class="form-container" #registerForm="ngForm" (ngSubmit)="registerForm.form.valid && formValid() && submitForm(registerForm)">
+            <p>
+                <label>Naslov</label>
+                <input type="text" #titleVar="ngModel" [(ngModel)]="newBook.title" name="title" required>
+                <span [hidden]="!(registerForm.submitted && titleVar.invalid)">
+                    <small style="color: var(--warn);">Naslov je obavezan.</small>
+                </span>
+            </p>
+            <div class="inner-c">
+                <label>Autori</label>
+                <div class="names-container" *ngFor="let author of newBook.authors">
+                    <span class="names"><input placeholder="Ime" type="text" #firstname [value]="author.firstName" required></span>    
+                    <span class="names"><input placeholder="Prezime" type="text" #lastname [value]="author.lastName" required></span>
+                    <span class="names-error" [hidden]="!(registerForm.submitted && firstname.value == '' && lastname.value == '')">
+                        <small style="color: var(--warn);">Ime i prezime autora je obavezno.</small>
+                    </span>    
+                </div>
+                <p style="text-align: center">
+                <button (click)="addAuthor()" type="button">&plus;</button> 
+                &nbsp; 
+                <button [ngClass]="{hide: newBook.authors.length <= 1}" (click)="removeAuthor()" type="button">&minus;</button>
+                </p>
+            </div>
+            <div class="inner-c">
+                <label>Žanrovi</label>
+                <div *ngFor="let curGenre of newBook.genres">
+                    <input type="text" #genre [value]="curGenre">    
+                    <span [hidden]="!(registerForm.submitted && genre.value == '')">
+                        <small style="color: var(--warn);">Polje za žanr ne sme biti prazno.</small>
+                    </span>    
+                </div>
+                <p style="text-align: center">
+                    <button [ngClass]="{hide: newBook.genres.length >= 3}" (click)="addGenre()" type="button">&plus;</button> 
+                    &nbsp; 
+                    <button [ngClass]="{hide: newBook.genres.length <= 1}" (click)="removeGenre()" type="button">&minus;</button>
+                </p>
+            </div>
+            <p>
+                <label>Izdavač</label>
+                <input type="text" #publisherVar="ngModel" name="publisher" [(ngModel)]="newBook.publisher" required>
+                <span [hidden]="!(registerForm.submitted && publisherVar.invalid)">
+                    <small style="color: var(--warn);">Polje za izdavača ne sme biti prazno.</small>
+                </span>
+            </p>
+            <p>
+                <label>Godina izdavanja</label>
+                <input name="yearPublished" type="number" [(ngModel)]="yearPublishedString">
+                <span [hidden]="!(registerForm.submitted && !yearValid())">
+                    <small style="color: var(--warn);">Godina je obavezna i mora biti u rasponu od 1900 do sada.</small>
+                </span>
+            </p>
+            <p>
+                <label>Jezik</label>
+                <input type="text" #languageVar="ngModel" name="language" [(ngModel)]="newBook.language" required>
+                <span [hidden]="!(registerForm.submitted && languageVar.invalid)">
+                    <small style="color: var(--warn);">Jezik je obavezan.</small>
+                </span>
+            </p>
+            <div class="inner-c" *ngIf="user.role == 'moderator' || user.role == 'admin'">
+                <label style="text-align: center">
+                    <input type="checkbox" name="successfullyAdded" [(ngModel)]="newBook.successfullyAdded">
+                    Knjiga uspešno dodata
+                </label>
+                <p>
+                    <label>Broj primeraka na stanju</label>
+                    <input type="number" #copiesVar="ngModel" name="copiesAvailable" [(ngModel)]="newBook.copiesAvailable" 
+                        required min="0">
+                    <span [hidden]="!(registerForm.submitted && copiesVar.invalid)">
+                        <small style="color: var(--warn);">Broj mora biti validan.</small>
+                    </span>
+                </p>
+            </div>
+            <div class="form-container" style="text-align: center;">
+                <div>
+                    <p>
+                        <label>Dodajte novu fotografiju korica</label>
+                        <input type="file" accept="image/jpeg,image/png" [ngStyle]="{ display : 'none' }"
+                            (input)="onFileSelected($event)" name="pictureUpload" #pictureUploadForClick
+                            #pictureUpload="ngModel" ngModel class="form-control">
+                    </p>
+                    <p class="upload-button">
+                        <a (click)="pictureUploadForClick.click()">{{image && image.name || 'Dodajte fotografiju'}}</a>
+                        <br>
+                    </p>
+                    <p>
+                        <small>Fotografiju možete dodati u .jpg ili .png formatu.</small>
+                    </p>
+
+                </div>
+                <p *ngIf="isNew">
+                    <button type="submit">Potvrdi</button>
+                </p>
+                <p *ngIf="!isNew">
+                    <button type="submit">Izmeni</button>
+                    &nbsp;
+                    <button type="button" (click)="deleteBook()" style="background-color: var(--warn)">Obriši knjigu</button>
+                </p>
+            </div>
+        </form>
+    </article>
+</div>

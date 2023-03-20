@@ -1,0 +1,24 @@
+<div style="height: 100%">
+    <div class="my-body">
+        <header>
+            <app-navbar (userUpdate)="resetNotifications()"></app-navbar>
+            <h1>Biblioteka</h1>
+        </header>
+        <main style="min-height: 100%;">
+            <router-outlet (activate)="subscribeToEmmiter($event)"></router-outlet>
+        </main>
+        <div class="notification-outer-container">
+            <div *ngFor="let notification of notifications; index as i" 
+            [ngClass]="{'notification-container': true, 'notification-away': toggleVar.checked}">
+                <input type="checkbox" #toggleVar [id]="'toggleVar'+i" style="display: none">
+                <span *ngIf="!notification.permanent" class="closebtn" (click)="toggleVar.click()">×</span>
+                <p [ngClass]="{'notification-warn': notification.warn, 'notification-permanent': notification.permanent}">
+                    {{notification.text}}
+                </p> 
+            </div>
+        </div>
+        <footer>
+            Biblioteka &copy; 2022
+        </footer>
+    </div>
+</div>

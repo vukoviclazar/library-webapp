@@ -1,0 +1,57 @@
+<div class="form-container">
+    <p style="text-align: center"><b>Pretražite knjige:</b></p>
+    <p>
+        <input type="text" placeholder="Naslov knjige" name="titleParam" #titleParamInput ngModel (ngModelChange)="titleChanged()">
+        <input type="text" placeholder="Ime ili prezime autora" name="authorsParam" #authorsParamInput ngModel (ngModelChange)="authorsChanged()">
+    </p>
+    <div *ngIf="userRole == 'admin' || userRole == 'moderator'">
+        <p>
+        <label style="text-align: center">
+            <input type="checkbox" name="searchForRequests" #searchForRequests (change)="searchForRequestsChanged(searchForRequests)">
+            Traži knjige koje nisu odobrene
+        </label>
+        </p>
+        <p style="text-align: center">
+            <button [routerLink]="['/reader/add-book']"> &plus; &nbsp; Dodaj novu knjigu</button>
+        </p>
+    </div>
+    <input type="checkbox" #toggleVar id="toggleVar" style="display: none">
+    <div [class]="{'expansion': true, 'expansion-toggled': toggleVar.checked}" *ngIf="userRole != 'guest' && userRole != 'blocked'">
+        <span class="hover-brightness-text" (click)="toggleVar.click()" for="toggleVar">Napredna pretraga &downarrow;</span>
+        <div class="form-container">
+            <p>
+            <input type="text" placeholder="Izdavač" name="publisherParam" #publisherParamInput ngModel (ngModelChange)="publisherChanged()">
+            <input type="number" placeholder="Donja granica za godinu izdanja (1900 do sada)" name="yearFromParam" #yearFromParamInput="ngModel" ngModel 
+                (ngModelChange)="yearValid(yearFromParamInput.value) && yearFromChanged(yearFromParamInput.value)">
+            <input type="number" placeholder="Gornja granica za godinu izdanja (1900 do sada)" name="yearToParam" #yearToParamInput="ngModel" ngModel 
+                (ngModelChange)="yearValid(yearToParamInput.value) && yearToChanged(yearToParamInput.value)">
+            <mat-form-field appearance="outline" style="width: 100%; height: 1.5em; transition: none;">
+                <mat-select (ngModelChange)="genresChanged()" placeholder="Žanr" [formControl]="currentGenres" multiple disableRipple style="transition: none">
+                    <mat-option *ngFor="let genre of allGenres" [value]="genre">{{genre}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            </p>
+        </div>
+    </div>
+</div>
+<section style="margin-top: 0.5em">
+    <div *ngIf="!errorFetchingData">
+        <div class="search-results-container" *ngIf="books$ | async as books; else loading">
+            <p style="text-align: center; color: var(--warn);" *ngIf="books.length == 0"><b>Nema knjiga sa traženim
+                    parametrima</b>.</p>
+            <app-book-card class="card-adapted" *ngFor="let book of books" [book]="book"></app-book-card>
+        </div>
+    </div>
+
+</section>
+<p *ngIf=" !errorFetchingData && pageCount != 1" style="text-align: center;">
+    <button (click)="decPage()" [disabled]="currentPageNum == 1">&lt;</button>
+    &nbsp;
+    {{currentPageNum}}
+    &nbsp;
+    <button (click)="incPage()" [disabled]="currentPageNum == pageCount">&gt;</button>
+</p>
+
+<ng-template #loading>
+    <mat-progress-bar mode="buffer"></mat-progress-bar>
+</ng-template>

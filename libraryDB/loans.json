@@ -1,0 +1,34 @@
+[{
+  "_id": {
+    "$oid": "632afc069601d03b8152140a"
+  },
+  "userId": {
+    "$oid": "63023ef248b322d1e659b871"
+  },
+  "book": {
+    "$oid": "632afa359601d03b81521387"
+  },
+  "dateBorrowed": {
+    "$date": {
+      "$numberLong": "1662674400000"
+    }
+  },
+  "extended": false,
+  "backupTitle": "Example",
+  "backupAuthors": [{
+      "firstName": "Author1First",
+      "lastName": "Author1Last",
+      "_id": {
+        "$oid": "632afa359601d03b81521388"
+      }
+    },
+    {
+      "firstName": "Author2First",
+      "lastName": "Author2Last",
+      "_id": {
+        "$oid": "632afa359601d03b81521389"
+      }
+    }
+  ],
+  "__v": 0
+}]

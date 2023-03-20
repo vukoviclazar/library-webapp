@@ -1,0 +1,117 @@
+<article>
+    <h4 *ngIf="!isAdmin" style="text-align: center;">Registrujte se kao čitalac u biblioteci: </h4>
+    <h4 *ngIf="isAdmin" style="text-align: center;">Dodajte čitaoca u biblioteku: </h4>
+    <form class="form-container" #registerForm="ngForm"
+        (ngSubmit)="registerForm.form.valid && password1Var.value == password2Var.value && roleValid() && makeRegistrationRequest(registerForm)">
+        <p>
+            <label>Korisničko ime</label>
+            <input type="text" name="username" #usernameVar="ngModel" [(ngModel)]="newUser.username" required>
+            <span [hidden]="!(registerForm.submitted && usernameVar.invalid)">
+                <small style="color: var(--warn);">Korisničko ime je obavezno.</small>
+            </span>
+        </p>
+        <p>
+            <label>Lozinka</label>
+            <input type="password" name="password1" #password1Var="ngModel" [(ngModel)]="newUser.password" required
+                pattern="^(?=[a-zA-Z0-9@%+\\/'!#$^?:.(){}[\]~`\-_.]{8,12}$)(?=.*[@%+\\/'!#$^?:.(){}[\]~`\-_ .])(?=.*[0-9])(?=.*[A-Z])[a-zA-Z].*">
+            <span [hidden]="!(registerForm.submitted && password1Var.invalid)">
+                <small style="color: var(--warn);">Lozinka je obavezna, mora počinjati slovom i imati između 8 i 12
+                    karaktera, među kojima bar jedno veliko slovo, jedan broj i jedan specijalni karakter.</small>
+            </span>
+        </p>
+        <p>
+            <label>Ponovite lozinku</label>
+            <input type="password" name="password2" #password2Var="ngModel" ngModel>
+            <span [hidden]="!(registerForm.submitted && (password2Var.value != password1Var.value))">
+                <small style="color: var(--warn);">Lozinka i ponovljena lozinka se ne poklapaju.</small>
+            </span>
+        </p>
+        <p>
+            <label>Ime</label>
+            <input type="text" name="firstname" #firstnameVar="ngModel" [(ngModel)]="newUser.firstName" required
+                pattern="^[A-Z][a-z]+(\s|-[A-Z][a-z]+)*$">
+            <span [hidden]="!(registerForm.submitted && firstnameVar.invalid)">
+                <small style="color: var(--warn);">Ime je obavezno, svaka reč u imenu mora počinjati velikim
+                    slovom.</small>
+            </span>
+        </p>
+        <p>
+            <label>Prezime</label>
+            <input type="text" name="lastname" #lastnameVar="ngModel" [(ngModel)]="newUser.lastName" required
+                pattern="^[A-Z][a-z]+(\s|-[A-Z][a-z]+)*$">
+            <span [hidden]="!(registerForm.submitted && lastnameVar.invalid)">
+                <small style="color: var(--warn);">Prezime je obavezno, svaka reč u prezimenu mora počinjati velikim
+                    slovom.</small>
+            </span>
+        </p>
+        <p>
+            <label>Adresa</label>
+            <input type="text" name="address" #addressVar="ngModel" [(ngModel)]="newUser.address" required
+                pattern="^[A-Za-z\s0-9]+,\s?([0-9]+[A-Za-z]?|bb|bez broja),\s?[A-Za-z\s]+$">
+            <span [hidden]="!(registerForm.submitted && addressVar.invalid)">
+                <small style="color: var(--warn);">Adresa mora biti u formatu "Ulica, broj, grad".</small>
+            </span>
+        </p>
+        <p>
+            <label>Telefon</label>
+            <input type="text" name="phone" #phoneVar="ngModel" [(ngModel)]="newUser.phone" required
+                pattern="^(?=(?:.*[0-9]){6})(?!(?:.*[0-9]){16})\+?(\([0-9]+\))?((\/|\s|-)?[0-9]+)*$">
+            <span [hidden]="!(registerForm.submitted && phoneVar.invalid)">
+                <small style="color: var(--warn);">Morate uneti validan broj telefona.</small>
+            </span>
+        </p>
+        <p>
+            <label>E-mail</label>
+            <input type="email" name="email" #emailVar="ngModel" [(ngModel)]="newUser.email" required>
+            <span [hidden]="!(registerForm.submitted && emailVar.invalid)">
+                <small style="color: var(--warn);">Morate uneti validnu e-mail adresu.</small>
+            </span>
+        </p>
+        <p *ngIf="isAdmin">
+            <label>Uloga koju korisnik ima:</label>
+            <label for="role">
+                <input type="radio" name="role" [(ngModel)]="newUser.role" value="reader">
+                Čitalac
+            </label>
+            <label for="role">
+                <input type="radio" name="role" [(ngModel)]="newUser.role" value="moderator">
+                Moderator
+            </label>
+            <label for="role">
+                <input type="radio" name="role" [(ngModel)]="newUser.role" value="admin">
+                Administrator
+            </label>
+            <span [hidden]="!(registerForm.submitted && !roleValid())">
+                <small style="color: var(--warn);">Morate odabrati ulogu za korisnika.</small>
+            </span>
+        </p>
+        <p *ngIf="newUser.role == 'reader' && isAdmin">
+            <label>
+                <input type="checkbox" name="blocked" [(ngModel)]="newUser.registeredSuccessfully">
+                Korisnik je uspešno registrovan
+            </label>
+            <label>
+                <input type="checkbox" name="blocked" [(ngModel)]="newUser.blocked">
+                Korisnik je blokiran
+            </label>
+        </p>
+        <div class="form-container" style="text-align: center;">
+            <p>
+                <label>Fotografija</label>
+                <input type="file" accept="image/jpeg,image/png" [ngStyle]="{ display : 'none' }"
+                    (input)="onFileSelected($event)" name="pictureUpload" #pictureUploadForClick
+                    #pictureUpload="ngModel" ngModel class="form-control">
+            </p>
+            <p class="upload-button">
+                <a (click)="pictureUploadForClick.click()">{{image && image.name || 'Dodajte fotografiju'}}</a>
+                <br>
+            </p>
+            <p>
+                <small>Fotografiju možete dodati u .jpg ili .png formatu.</small>
+            </p>
+            <p>
+                <button type="submit">{{isAdmin ? 'Dodajte korisnika':'Pošaljite zahtev za registraciju'}}</button>
+            </p>
+        </div>
+    </form>
+</article>

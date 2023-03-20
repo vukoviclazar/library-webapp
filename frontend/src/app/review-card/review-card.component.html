@@ -1,0 +1,55 @@
+<div class="outer-container">
+    <div class="profile-image-container">
+        <div style="display: flex; flex-direction: row; align-items: center; flex: 100%;">
+            <img class="profile-image" src="{{avatarPath}}" alt="avatar of user {{username}}">
+            <div style="display: flex; flex-direction: column; align-items: baseline; flex: 1;">
+                <div style="display: flex; flex-flow: row wrap; justify-content: space-between; width: 100%;">
+                    <b>{{username}}</b>
+                    <small style="color: var(--text-light)">
+                        {{date == null ? "" : formatDate(date)}}
+                    </small>
+                </div>
+                <div style="display: flex; flex-flow: row wrap; justify-content: space-between; width: 100%;">
+                    <div>
+                        <button [disabled]="!isEditable" class="button-reset" mat-icon-button *ngFor="let i of arrayRating"
+                            [id]="'star_'+i" (click)="updateRating(i)">
+                            <mat-icon>
+                                {{renderStar(i)}}
+                            </mat-icon>
+                        </button>
+                    </div>    
+                    <small style="color: var(--text-light)">
+                        {{(!isNew && review.edited) ? 'Izmenjeno' : ''}}
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: flex-end;">
+        </div>
+    </div>
+    <p class="comment" style=" margin-top: 0.2em; margin-bottom: 0.2em; align-self: flex-end;">
+        <textarea *ngIf="(comment.length != 0 || isEditable); else nocomment"
+        placeholder="Ostavite komentar"
+        matInput
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="2"
+        cdkAutosizeMaxRows="20" [disabled]="!isEditable" [(ngModel)]="comment"></textarea>
+    </p>
+    <p style="display: flex; flex-flow: row nowrap; flex: 100% 0 0; align-items: center;
+        margin-top: 0.2em; margin-bottom: 0.2em; width: 100%; justify-content: space-between;"
+        *ngIf="!isNew && review.user != null && review.user._id == curUser._id && !review.edited">
+        <label style="margin-left : var(--left-margin)">
+            <input type="checkbox" [(ngModel)]="isEditable">
+            Izmeni recenziju?
+        </label>
+        <button (click)="reviewValid() && updateReview()" *ngIf="isEditable" style='align-self: flex-end;'>Potvrdi izmene</button>
+    </p>
+    <p *ngIf="isNew" style="margin-top: 0.2em; margin-bottom: 0.2em; align-self: flex-end;">
+        <button (click)="reviewValid() && submitReview()">Postavi recenziju</button>
+    </p>
+</div>
+
+<ng-template #nocomment>
+    <span style="display: block; width: 100%; text-align: left; color: var(--text-light)">Korisnik {{username}} je ocenio knjigu sa ocenom {{rating}}.</span>
+</ng-template>

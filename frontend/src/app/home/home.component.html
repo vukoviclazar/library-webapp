@@ -1,0 +1,35 @@
+    <div *ngIf="userRole == 0" class="unregistered-home-container">
+        <h3 style="text-align: center">Najčitanije knjige</h3>
+        <section>
+            <div *ngIf="featuredBooks$ | async as books; else loading" class="featured">
+                <app-featured-books [books]="books"></app-featured-books>
+            </div>
+        </section>
+        <ng-template #loading>
+            <mat-progress-bar mode="buffer"></mat-progress-bar>
+        </ng-template>
+        <app-login (userUpdate)="delegateUserUpdate($event)"></app-login>
+    </div>
+    <div *ngIf="userRole != 0" class="unregistered-home-container">
+        <article>
+            <h3 style="text-align: center">Knjiga dana</h3>
+            <div style="text-align: center" *ngIf="bookOfTheDay$ | async as book; else loading" class="form-container">
+                <p>
+                    <img alt="cover of book {{book.title}}" src='{{coverUri}}/{{book.coverImagePath}}'
+                        class="profile-page" />
+                </p>
+                <h4 [routerLink]="['/reader/book-details', book._id ]" class="hover-brightness-text">{{book.title}}</h4>
+                <p>
+                    <label>Autori:
+                        <b>{{authorsToString(book)}}</b></label>
+                </p>
+                <p>
+                    <label>Prosečna ocena:
+                        <b>{{doubleCompare(book.averageRating, 0) != 0 ? book.averageRating : "Nije ocenjena"}}</b></label>
+                </p>
+            </div>
+        </article>
+    </div>
+    <ng-template #loading>
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+    </ng-template>

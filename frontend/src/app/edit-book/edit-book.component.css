@@ -1,0 +1,42 @@
+.hide {
+    display: none;
+}
+
+.names-container {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.names {
+    flex: 48% 0 0;
+}
+
+.names-error {
+    flex: 100% 0 0;
+} 
+
+.form-container > div.inner-c {
+    width: 60%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  @media only screen and (max-width: 720px) {
+    .form-container > div.inner-c {
+        width: 100%;
+    }
+    .names-container {
+        width: 100%;
+    }
+  }
+
+.form-container > div.inner-c input[type="text"],
+.form-container > div.inner-c input[type="password"],
+.form-container > div.inner-c input[type="email"],
+.form-container > div.inner-c input[type="number"] {
+  width: 100%;
+}
+
+  

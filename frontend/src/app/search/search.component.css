@@ -1,0 +1,25 @@
+.search-results-container {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-adapted {
+    display: inline-block;
+    margin: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.expansion {
+    display: flex;
+    flex-flow: column;
+    overflow-y: hidden;
+    max-height: 1.5em;
+    transition: max-height .2s ease-in-out
+}
+
+.expansion-toggled {
+    max-height: 20em;
+    transition: max-height .2s ease-in-out
+}

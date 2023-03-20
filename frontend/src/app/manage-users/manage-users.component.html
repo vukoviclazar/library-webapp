@@ -1,0 +1,43 @@
+<div class="form-container">
+    <p style="text-align: center"><b>Promenite broj dana na koji korisnici mogu da zaduže knjige:</b></p>
+    <p style="margin-bottom: 0.2em;">
+        <input type="number" name="numDays" [(ngModel)]="numDaysString">
+    </p>
+    <p style="text-align: center; margin-top: 0.2em;">
+        <button (click)="numDaysValid() && submitNumDays()">Potvrdi</button>
+    </p>
+    <p style="text-align: center"><b>Pretražite korisnike:</b></p>
+    <p>
+        <input type="text" placeholder="Korisničko ime ili adresa elektronske pošte" name="searchParam" #searchParamVar>
+    </p>
+    <p>
+        <label style="text-align: center">
+            <input type="checkbox" name="showOnlyPending" #showOnlyPending>
+            Traži korisnike koji nisu uspešno registrovani
+        </label>
+    </p>
+    <p style="text-align: center">
+        <button [routerLink]="['/admin/create-user']"> &plus; &nbsp; Dodaj novog korisnika</button>
+    </p>
+</div>
+<section>
+    <div *ngIf="!errorFetchingData">
+        <div *ngIf="users$ | async as users; else loading">
+            <p style="text-align: center; color: var(--warn);" *ngIf="users.length == 0"><b>Nema korisnika sa traženim
+                    parametrima</b>.</p>
+            <app-user-card *ngFor="let user of users" [user]="user"></app-user-card>
+        </div>
+    </div>
+
+</section>
+<p *ngIf=" !errorFetchingData && pageCount != 1" style="text-align: center;">
+    <button (click)="decPage()" [disabled]="currentPageNum == 1">&lt;</button>
+    &nbsp;
+    {{currentPageNum}}
+    &nbsp;
+    <button (click)="incPage()" [disabled]="currentPageNum == pageCount">&gt;</button>
+</p>
+
+<ng-template #loading>
+    <mat-progress-bar mode="buffer"></mat-progress-bar>
+</ng-template>

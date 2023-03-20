@@ -1,0 +1,21 @@
+<div *ngIf="!dataError">
+    <input type="radio" name="slider" #book1 id="book1" checked>
+    <input type="radio" name="slider" #book2 id="book2">
+    <input type="radio" name="slider" #book3 id="book3">
+    <div class="carousel-container">
+        <button class="button-left" (click)="prevBook()">&lt;</button>
+        <label class="carousel-card" [class]="{ center : book1.checked, left : book2.checked, right : book3.checked }"
+            for="book1">
+            <app-book-card (click)="book1.click()" [book]="books[0]"></app-book-card>
+        </label>
+        <label class="carousel-card" [class]="{ center : book2.checked, left : book3.checked, right : book1.checked }"
+            for="book2">
+            <app-book-card (click)="book2.click()" [book]="books[1]"></app-book-card>
+        </label>
+        <label class="carousel-card" [class]="{ center : book3.checked, left : book1.checked, right : book2.checked }"
+            for="book3">
+            <app-book-card (click)="book3.click()" [book]="books[2]"></app-book-card>
+        </label>
+        <button class="button-right" (click)="nextBook()">&gt;</button>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<nav>
+    <ul>
+        <li><a [routerLink]="['/home']" [routerLinkActive]="['current']">Početna strana</a>
+        <li *ngIf="userRole == 0"><a [routerLink]="['/register']" [routerLinkActive]="['current']">Registracija</a>
+        <li><a [routerLink]="['/search']" [routerLinkActive]="['current']">Pretraga</a>
+        <li *ngIf="userRole == 'reader'"><a [routerLink]="['/reader/add-book']" [routerLinkActive]="['current']">Zahtev za novu knjigu</a>
+        <li *ngIf="userRole != 0"><a [routerLink]="['/reader/borrowed-books']" [routerLinkActive]="['current']">Pozajmljene knjige</a>
+        <li *ngIf="userRole != 0"><a [routerLink]="['/reader/borrow-history']" [routerLinkActive]="['current']">Istorija pozajmljivanja</a>
+        <li *ngIf="roleToString() == 'admin'"><a [routerLink]="['admin/manage-users']" [routerLinkActive]="['current']">Upravljaj korisnicima</a>
+
+        <li *ngIf="userRole != 0"><span class="profile-image-container" [routerLinkActive]="['current']" [routerLink]="['/reader/profile']">
+                <img id="profilePicture" class="profile-image" [routerLinkActive]="['current']" [routerLink]="['/reader/profile']"
+                    src='{{userAvatarUri}}' alt='{{"Avatar of user " + user.username}}'>
+                {{user.firstName + " " + user.lastName}}
+            </span>
+        <li *ngIf="userRole != 0"><span class="vert-line"></span>
+        <li *ngIf="userRole != 0"><span class="profile-image-container" style="margin: 0rem 0rem 1rem 1rem !important;"
+                (click)="logout()">
+                Odjava
+            </span>
+    </ul>
+</nav>
